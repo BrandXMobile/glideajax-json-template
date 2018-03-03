@@ -25,19 +25,26 @@ GlideAjaxJsonExample.prototype = Object.extendsObject(AbstractAjaxProcessor, {
 
 
 /**
- * From the client side
+ * Calling the script include from the client side
  * 1. Instantiate the new GlideAjax object
  * 2. Set sysparm_name to the name of the script include function to run
  * 3. Create additional parameter values as necessary
  * 4. Call the script include with getXML()
  * 5. Process the response with a callback function
+ * 6. Do something useful with each result
  */
 var ga = new GlideAjax("GlideAjaxExample");
 ga.addParam("sysparm_name", "getMyStuff");
-ga.addParam("sysparm_tableColumnValue", "tableColumnValue")
-ga.getXML(callback);
+ga.addParam("sysparm_tableColumnValue", "tableColumnValue");
+ga.getXML(processResponse);
 
-function callback(response){
+function processResponse(response){
   var jsonAnswer = response.responseXML.documentElement.getAttribute("answer");
-  console.log(jsonAnwer);
+  var results = JSON.parse(jsonAnswer);
+  results.forEach(function(element) { doSmth(element); });
+}
+
+function doSmth(elem){
+  //do something useful with each result
+  console.log(elem);
 }
