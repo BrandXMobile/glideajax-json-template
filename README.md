@@ -1,0 +1,1 @@
+# glideajax-json-template
